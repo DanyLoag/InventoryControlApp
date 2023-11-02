@@ -7,16 +7,23 @@ public static partial class UI
         {
             Console.WriteLine("1: Login ");
             Console.WriteLine("2: Signup");
-            string res = Console.ReadLine();
+            string res = Console.ReadLine()??"";
             Console.Clear();
             switch (res)
             {
                 case "1":
-                    LogIn();
-                    break;
+                Console.WriteLine("Ingresa tu usuario:");
+                string userName = Console.ReadLine()??"";
+                Console.WriteLine("Ingresa tu contraseña:");
+                string password = Console.ReadLine()??"";
+                var user1=LogIn(userName,password) ;
+                MenuSelected(user1.MenuCorrespondiente);
+                break;
                 case "2":
                     SignUp();
                     break;
+                case "3":
+                return;
                 default:
                     Console.WriteLine("Opción no válida, intentelo de nuevo");
                     break;

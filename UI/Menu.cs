@@ -12,7 +12,7 @@ public static partial class UI
             Console.WriteLine("2: Ver solicitudes");
             Console.WriteLine("3: Cambiar contraseña");
             Console.WriteLine("9: Logout");
-            String option = Console.ReadLine();
+            String option = Console.ReadLine()??"";
             Console.Clear();
 
             switch (option)
@@ -35,7 +35,7 @@ public static partial class UI
             Console.WriteLine("3: Hacer una solicitud");
             Console.WriteLine("4: Cambiar contraseña");
             Console.WriteLine("9: Logout");
-            String option = Console.ReadLine();
+            String option = Console.ReadLine()??"";
             Console.Clear();
 
             switch (option)
@@ -58,7 +58,7 @@ public static partial class UI
             Console.WriteLine("3: Generar informes");
             Console.WriteLine("4: Cambiar contraseña");
             Console.WriteLine("9: Logout");
-            String option = Console.ReadLine();
+            String option = Console.ReadLine()??"";
             Console.Clear();
 
             switch (option)
@@ -81,7 +81,7 @@ public static partial class UI
             Console.WriteLine("3: Opción 3");
             Console.WriteLine("4: Cambiar contraseña");
             Console.WriteLine("9: Logout");
-            String option = Console.ReadLine();
+            String option = Console.ReadLine()??"";
             Console.Clear();
 
             switch (option)
