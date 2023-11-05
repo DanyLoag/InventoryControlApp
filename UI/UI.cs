@@ -16,8 +16,8 @@ public static partial class UI
                 string userName = Console.ReadLine()??"";
                 Console.WriteLine("Ingresa tu contraseña:");
                 string password = Console.ReadLine()??"";
-                var user1=LogIn(userName,password) ;
-                MenuSelected(user1.MenuCorrespondiente);
+                var (usuarioEncontrado, MenuCorrespondiente) = LogIn(userName,password) ;
+                MenuSelected(MenuCorrespondiente);
                 break;
                 case "2":
                     SignUp();

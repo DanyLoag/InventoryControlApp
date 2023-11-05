@@ -3,7 +3,9 @@ using InventoryControl;
 using Proyecto_Almacen.AutoGen;
 public static partial class UI
 {
-    
+    public static int Sum(int A ,int B){
+        return A+B;
+    }
     /// <summary>
     /// Metodo de login , revisa si existe ese usuario en la bd y retorna su tipo y usuario encontrado
     /// </summary>
@@ -11,7 +13,7 @@ public static partial class UI
     /// <param name="userName">usuario</param>
     /// <param name="password">contraseña</param>
     /// <returns></returns>
-    static (Usuario? usuarioEncontrado,int MenuCorrespondiente) LogIn(string userName,string password)
+    public static (Usuario? usuarioEncontrado,int MenuCorrespondiente) LogIn(string userName,string password)
     {
         using (Almacen db = new())
         {
