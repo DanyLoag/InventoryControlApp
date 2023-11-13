@@ -2,13 +2,13 @@ using System;
 using AlmacenDataContext;
 using AlmacenSQLiteEntities;
 public static partial class CrudFuntions{
-    public static void AddStudent(Estudiante estudiante, Usuario usuario){
-        using (Almacen db = new()){
+    public static bool AddStudent(Estudiante estudiante, Usuario usuario,IAlmacenDataContext dataContext){
+        using (var db = dataContext){
             var CheckStudent = db.Estudiantes.FirstOrDefault(r => r.EstudianteId == estudiante.EstudianteId || r.Correo == estudiante.Correo);
             if (CheckStudent != null)
             {
                 WriteLine("Datos de usuario ya existentes");
-                return;
+                return false;
             }
             int? lastUserId = db.Usuarios.OrderByDescending(u => u.UsuarioId).Select(u => u.UsuarioId).FirstOrDefault();
             int UserID = lastUserId.HasValue ? lastUserId.Value + 1 : 1;
@@ -19,16 +19,17 @@ public static partial class CrudFuntions{
             db.SaveChanges();
             db.Usuarios.Add(usuario);
             db.SaveChanges();
+            return true;
         }
     }
 
-    public static void AddTeacher(Docente docente, Usuario usuario){
-        using (Almacen db = new()){
+    public static bool AddTeacher(Docente docente, Usuario usuario,IAlmacenDataContext dataContext){
+        using (var db = dataContext){
             var CheckStudent = db.Docentes.FirstOrDefault(r => r.DocenteId == docente.DocenteId || r.Correo == docente.Correo);
             if (CheckStudent != null)
             {
                 WriteLine("Datos de docentes ya existentes");
-                return;
+                return false;
             }
             int? lastUserId = db.Usuarios.OrderByDescending(u => u.UsuarioId).Select(u => u.UsuarioId).FirstOrDefault();
             int UserID = lastUserId.HasValue ? lastUserId.Value + 1 : 1;
@@ -39,16 +40,17 @@ public static partial class CrudFuntions{
             db.SaveChanges();
             db.Usuarios.Add(usuario);
             db.SaveChanges();
+            return true;
         }
     }
 
-    public static void AddWarehouseManager(Almacenista almacenista, Usuario usuario){
-        using (Almacen db = new()){
+    public static bool AddWarehouseManager(Almacenista almacenista, Usuario usuario,IAlmacenDataContext dataContext){
+        using (var db = dataContext){
             var CheckStudent = db.Almacenistas.FirstOrDefault(r => r.AlmacenistaId == almacenista.AlmacenistaId || r.Correo == almacenista.Correo);
             if (CheckStudent != null)
             {
                 WriteLine("Datos de docentes ya existentes");
-                return;
+                return false;
             }
             int? lastUserId = db.Usuarios.OrderByDescending(u => u.UsuarioId).Select(u => u.UsuarioId).FirstOrDefault();
             int UserID = lastUserId.HasValue ? lastUserId.Value + 1 : 1;
@@ -59,6 +61,7 @@ public static partial class CrudFuntions{
             db.SaveChanges();
             db.Usuarios.Add(usuario);
             db.SaveChanges();
+            return true;
         }
     }
 
@@ -126,10 +129,11 @@ public static partial class CrudFuntions{
         } 
     }
 
-    public static void AddPedido(Pedido pedido, DescPedido descPedido){
-        using (Almacen db = new()){
+    public static bool AddPedido(Pedido pedido, DescPedido descPedido,IAlmacenDataContext dataContext){
+        using (var db = dataContext){
             int? lastPedidoId = db.Pedidos.OrderByDescending(u => u.PedidoId).Select(u => u.PedidoId).FirstOrDefault();
             int pedidoID = lastPedidoId.HasValue ? lastPedidoId.Value + 1 : 1;
+            int ID= pedido.PedidoId;
             pedido.PedidoId = pedidoID;
             descPedido.PedidoId = pedidoID;
 
@@ -138,11 +142,11 @@ public static partial class CrudFuntions{
             descPedido.DescPedidoId = desPedidoID;
             WriteLine($"{pedido.PedidoId} | {descPedido.PedidoId}");
             
-            var CheckStudent = db.Pedidos.FirstOrDefault(r => r.PedidoId == pedido.PedidoId);
-            if (CheckStudent != null)
+            var CheckPedidos = db.Pedidos.FirstOrDefault(r => r.PedidoId == ID);
+            if (CheckPedidos != null)
             {
                 WriteLine("Datos de docentes ya existentes");
-                return;
+                return false;
             }
             try
             {
@@ -150,6 +154,7 @@ public static partial class CrudFuntions{
                 db.SaveChanges();
                 db.DescPedidos.Add(descPedido);
                 db.SaveChanges();
+                return true;
             }
             catch (Exception e)
             {

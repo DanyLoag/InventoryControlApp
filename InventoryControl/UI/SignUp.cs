@@ -87,7 +87,8 @@ public static partial class UI{
         usuario.Usuario1 = person.newUsername;
         usuario.Password = person.Contrasena;
         usuario.Temporal = false;
-        CrudFuntions.AddStudent(estudiante,usuario);
+        IAlmacenDataContext? db = (IAlmacenDataContext)new Almacen();
+        CrudFuntions.AddStudent(estudiante,usuario,db);
     }
     public static void SignUpDocente(){
         Person person = new Person();
@@ -103,7 +104,8 @@ public static partial class UI{
         usuario.Usuario1 = person.newUsername;
         usuario.Password = person.Contrasena;
         usuario.Temporal = false;
-        CrudFuntions.AddTeacher(docente,usuario);
+        IAlmacenDataContext? db = (IAlmacenDataContext)new Almacen();
+        CrudFuntions.AddTeacher(docente,usuario,db);
     }
     public static void SignUpAlmacenista(){  
         Person person = new Person();
@@ -119,6 +121,7 @@ public static partial class UI{
         usuario.Usuario1 = person.newUsername;
         usuario.Password = person.Contrasena;
         usuario.Temporal = false;
-        CrudFuntions.AddWarehouseManager(almacenista,usuario);
+        IAlmacenDataContext? db = (IAlmacenDataContext)new Almacen();
+        CrudFuntions.AddWarehouseManager(almacenista,usuario,db);
     }
 }

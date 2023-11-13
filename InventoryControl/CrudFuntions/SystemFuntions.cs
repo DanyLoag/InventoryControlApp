@@ -11,7 +11,8 @@ public static partial class CrudFuntions{
             descPedido.MaterialId = UI.GetMaterialID(SearchId());
             WriteLine("Ingresa la cantidad:");
             descPedido.Cantidad = int.Parse(ReadLine());
-            AddPedido(pedido, descPedido);
+           // IAlmacenDataContext? db = (IAlmacenDataContext)new Almacen();
+            AddPedido(pedido, descPedido,db);
         }
     }
 

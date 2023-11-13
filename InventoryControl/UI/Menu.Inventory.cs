@@ -25,11 +25,13 @@ public static partial class UI
                     
                     break;
                 case "3":
-                    CrudFuntions.ListMaterialsWithHighlight();
-                    int deletedMaterials = CrudFuntions.DeleteMaterials();
+                    //CrudFuntions.ListMaterialsWithHighlight();
+                    int materialId = CrudFuntions.SearchId();
+                    IAlmacenDataContext? db = (IAlmacenDataContext)new Almacen();
+                    int deletedMaterials = CrudFuntions.DeleteMaterials(materialId,db);
                     WriteLine($"{deletedMaterials} materiales eliminados.");
                     WriteLine();
-                    CrudFuntions.ListMaterialsWithHighlight();
+                    //CrudFuntions.ListMaterialsWithHighlight();
                     break;
                 case "4":
                     return;

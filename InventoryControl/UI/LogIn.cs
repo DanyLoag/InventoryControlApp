@@ -11,9 +11,9 @@ public static partial class UI
     /// <param name="userName">usuario</param>
     /// <param name="password">contraseña</param>
     /// <returns></returns>
-    static (Usuario? usuarioEncontrado,int typeOfUser) LogIn(string userName,string password)
+     public static (Usuario? usuarioEncontrado,int typeOfUser) LogIn(string userName,string password,IAlmacenDataContext dataContext)
     {
-        using (Almacen db = new())
+        using (var db = dataContext)
         {
             var user = db.Usuarios.FirstOrDefault(u => u.Usuario1 == userName && u.Password == password);//busca al usuario en la BD 
             if (user != null)//si no es nulo , osea que si encontro un usuario regresara al usuario encontrado junto con su tipo

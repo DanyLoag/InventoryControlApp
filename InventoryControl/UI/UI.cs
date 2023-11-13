@@ -18,7 +18,8 @@ public static partial class UI
                 string userName = ReadLine()??"";
                 WriteLine("Ingresa tu contraseña:");
                 string password = ReadLine()??"";
-                var user=LogIn(userName,password) ;
+                IAlmacenDataContext? db = (IAlmacenDataContext)new Almacen();
+                var user=LogIn(userName,password,db) ;
                 MenuSelected(user.usuarioEncontrado,user.typeOfUser);
                 break;
                 case "2":

@@ -118,7 +118,9 @@ public static partial class UI{
                     break;
                 case "6":
                     CrudFuntions.ListOrdersWithHighlight();
-                    int deletedOrders = CrudFuntions.DeleteOrders();
+                    int pedidoId = CrudFuntions.SearchId();
+                     IAlmacenDataContext? db = (IAlmacenDataContext)new Almacen();
+                    int deletedOrders = CrudFuntions.DeleteOrders(pedidoId,db);
                     WriteLine($"{deletedOrders} pedidos eliminados.");
                     WriteLine();
                     CrudFuntions.ListOrdersWithHighlight();
@@ -160,59 +162,66 @@ public static partial class UI{
             WriteLine("18: Logout"); //check
             String option = ReadLine()??"";
             Clear();
-
+            IAlmacenDataContext? db = (IAlmacenDataContext)new Almacen();
             switch (option){
-                case "1":
+                case "1":{
                     CrudFuntions.ListOrdersWithHighlight();
-                    int deletedOrders = CrudFuntions.DeleteOrders();
+                    int pedidoId = CrudFuntions.SearchId();
+                     //IAlmacenDataContext? db = (IAlmacenDataContext)new Almacen();
+                    int deletedOrders = CrudFuntions.DeleteOrders(pedidoId,db);
                     WriteLine($"{deletedOrders} pedidos eliminados.");
                     WriteLine();
                     CrudFuntions.ListOrdersWithHighlight();
-                    break;
-                case "2":
+                    break;}
+                case "2":{
                     CrudFuntions.ListTeachers();
-                    int deletedTeachers = CrudFuntions.DeleteTeachers();
+                    int docenteId = CrudFuntions.SearchId();
+                    //IAlmacenDataContext? db = (IAlmacenDataContext)new Almacen();
+                    int deletedTeachers = CrudFuntions.DeleteTeachers(docenteId,db);
                     WriteLine($"{deletedTeachers} maestros eliminados.");
                     WriteLine();
                     CrudFuntions.ListTeachers();
-                    break;
-                case "3":
+                    break;}
+                case "3":{
                     CrudFuntions.ListInventoryManager();
-                    int deletedInventoryManager = CrudFuntions.DeleteInventoryManager();
+                    int almacenistaId = CrudFuntions.SearchId();
+                    int deletedInventoryManager = CrudFuntions.DeleteInventoryManager(almacenistaId,db);
                     WriteLine($"{deletedInventoryManager} almacenistas eliminados.");
                     WriteLine();
                     CrudFuntions.ListInventoryManager();
-                    break;
-                case "4":
+                    break;}
+                case "4":{
                     CrudFuntions.ListStudents();
-                    int deletedStudents = CrudFuntions.DeleteStudents();
+                    int estudianteId = CrudFuntions.SearchId();
+                    int deletedStudents = CrudFuntions.DeleteStudents(estudianteId,db);
                     WriteLine($"{deletedStudents} estudiantes eliminados.");
                     WriteLine();
                     CrudFuntions.ListStudents();
-                    break;
-                    /*
-                case "5":
+                    break;}
+                    
+                case "5":{
                     CrudFuntions.ReadMantenimientos();
-                    int deletedMat = CrudFuntions.DeleteMant();
+                    int mantenimientoId = CrudFuntions.SearchId();
+                    //IAlmacenDataContext? db = (IAlmacenDataContext)new Almacen();
+                    int deletedMat = CrudFuntions.DeleteMant(mantenimientoId,db);
                     WriteLine($"{deletedMat} mantenimientos eliminados.");
                     WriteLine();
                     CrudFuntions.ReadMantenimientos();
-                    break;
-                    */
-                case "6":
+                    break;}
+                case "6":{
                     CrudFuntions.ListOrdersWithHighlight();
                     int updateOrders = CrudFuntions.UpdateOrders();
                     WriteLine($"{updateOrders} pedidos modificados.");
                     WriteLine();
                     CrudFuntions.ListOrdersWithHighlight();
-                    break;
-                case "7":
+                    break;}
+                case "7":{
                     CrudFuntions.ListTeachers();
                     int updateTeachers = CrudFuntions.UpdateDataUsers(1);
                     WriteLine($"{updateTeachers} maestros modificados.");
                     WriteLine();
                     CrudFuntions.ListTeachers();
-                    break;
+                    break;}
                 case "8":
                     CrudFuntions.ListInventoryManager();
                     int updateInventoryManager = CrudFuntions.UpdateDataUsers(2);
