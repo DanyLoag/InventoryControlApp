@@ -91,7 +91,8 @@ public static partial class UI{
             WriteLine("6: Eliminar pedido");//check  casi
             WriteLine("7: Cambiar contraseña"); //check
             WriteLine("8: Agendar mantenimiento");//check
-            WriteLine("9: Logout");
+            WriteLine("9: Entrega de material");
+            WriteLine("10: Logout");
 
             string option = ReadLine()??"";
             Clear();
@@ -104,7 +105,7 @@ public static partial class UI{
                     CrudFuntions.ListOrders(3,almacenista.AlmacenistaId);
                     break;
                 case "3":
-
+                    CrudFuntions.GenerateReports();
                     break;
                 case "4":
                     CrudFuntions.OrderMaterial(3,almacenista.AlmacenistaId);
@@ -132,6 +133,9 @@ public static partial class UI{
                     CrudFuntions.NewReportMant();
                     break;
                 case "9":
+                    CrudFuntions.EntregaMaterial();
+                    break;
+                case "10":
                     return;
                 default:
                     break;

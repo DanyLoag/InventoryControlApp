@@ -15,9 +15,9 @@ public static partial class CrudFuntions{
             usuario.UsuarioId = UserID;
             estudiante.UsuarioId = UserID;
             Clear();
-            db.Estudiantes.Add(estudiante);
-            db.SaveChanges();
             db.Usuarios.Add(usuario);
+            db.SaveChanges();
+            db.Estudiantes.Add(estudiante);
             db.SaveChanges();
             return true;
         }
@@ -33,14 +33,19 @@ public static partial class CrudFuntions{
             }
             int? lastUserId = db.Usuarios.OrderByDescending(u => u.UsuarioId).Select(u => u.UsuarioId).FirstOrDefault();
             int UserID = lastUserId.HasValue ? lastUserId.Value + 1 : 1;
+            int? lastTeacherId = db.Docentes.OrderByDescending(u => u.DocenteId).Select(u => u.DocenteId).FirstOrDefault();
+            int TeacherID = lastTeacherId.HasValue ? lastTeacherId.Value + 1 : 1;
             usuario.UsuarioId = UserID;
             docente.UsuarioId = UserID;
+            docente.DocenteId = TeacherID;
             Clear();
-            db.Docentes.Add(docente);
-            db.SaveChanges();
             db.Usuarios.Add(usuario);
             db.SaveChanges();
+
+            db.Docentes.Add(docente);
+            db.SaveChanges();
             return true;
+
         }
     }
 
@@ -49,17 +54,23 @@ public static partial class CrudFuntions{
             var CheckStudent = db.Almacenistas.FirstOrDefault(r => r.AlmacenistaId == almacenista.AlmacenistaId || r.Correo == almacenista.Correo);
             if (CheckStudent != null)
             {
-                WriteLine("Datos de docentes ya existentes");
+
+                WriteLine("Datos de almacenista ya existentes");
                 return false;
+
             }
             int? lastUserId = db.Usuarios.OrderByDescending(u => u.UsuarioId).Select(u => u.UsuarioId).FirstOrDefault();
             int UserID = lastUserId.HasValue ? lastUserId.Value + 1 : 1;
+            int? lastWarehouseManagerId = db.Almacenistas.OrderByDescending(u => u.AlmacenistaId).Select(u => u.AlmacenistaId).FirstOrDefault();
+            int WarehouseManagerID = lastWarehouseManagerId.HasValue ? lastWarehouseManagerId.Value + 1 : 1;
             usuario.UsuarioId = UserID;
             almacenista.UsuarioId = UserID;
+            almacenista.AlmacenistaId = WarehouseManagerID;
             Clear();
-            db.Almacenistas.Add(almacenista);
-            db.SaveChanges();
             db.Usuarios.Add(usuario);
+            db.SaveChanges();
+
+            db.Almacenistas.Add(almacenista);
             db.SaveChanges();
             return true;
         }
@@ -237,15 +248,23 @@ public static partial class CrudFuntions{
     public static Material GetDataOfMaterial(){
         Material material = new Material();
         string? input;
-        do{
+        int id;
+        do
+        {
             WriteLine("Dame el id del material:");
             input = ReadLine();
-        }while(!int.TryParse(input, out _));
+        } while (!int.TryParse(input, out _) || UI.MaterialValidation(int.Parse(input)));
         material.MaterialId = int.Parse(input);
 
         ReadModelos();
         GeneralSearchModels();
-        material.ModeloId = SearchId();
+        do{
+            WriteLine("Dame el id del modelo:");
+            input = ReadLine();
+            id = UI.GetModeloID(input);
+        } while (UI.ModeloValidation(id) == false);
+        material.ModeloId = id;
+
         do{
             WriteLine("Dame la descripcion:");
             material.Descripcion = ReadLine();
@@ -265,11 +284,21 @@ public static partial class CrudFuntions{
 
         ReadMarcas();
         GeneralSearchMarcas();
-        material.MarcaId = SearchId();
+        do{
+            WriteLine("Dame el id de la marca:");
+            input = ReadLine();
+            id = UI.GetMarcaID(input);
+        } while (UI.MarcaValidation(id) == false);
+        material.MarcaId = id;
 
         ReadCategorias();
         GeneralSearchCategory(4);
-        material.CategoriaId = SearchId();
+        do{
+            WriteLine("Dame el id de la categoria:");
+            input = ReadLine();
+            id = UI.GetCategoriaID(input);
+        } while (UI.CategoriaValidation(id) == false);
+        material.CategoriaId = id;
 
         do{
             WriteLine("Plantel: ");

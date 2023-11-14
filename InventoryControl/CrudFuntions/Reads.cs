@@ -463,18 +463,13 @@ public static partial class CrudFuntions{
 
     public static void ReadQueryCategorias(IQueryable<Categoria>? categorias){
         using (Almacen bd = new()){
+            if(categorias is null || (!categorias.Any())){
+                Program.Fail("No hay categorias registrados");
+                return;
+            }
             WriteLine("{0,-10}|{1,-20}|{2,-20}|{3,-20}","CategoriaId", "Nombre", "Descripcion", "Acceso");
             foreach (var cat in categorias){
                 WriteLine($"{cat.CategoriaId,-13}|{cat.Nombre,-20}|{cat.Descripcion,-20}|{cat.Acceso}");
-            }
-        }
-    }
-
-    public static void ReadQueryDocentes(IQueryable<Docente> docentes){
-        using (Almacen bd = new()){
-            WriteLine("{0,-10}|{1,-20}|{2,-20}|{3,-20}|{4,-20}|{5,-10}|{6,-10}","DocenteId", "Nombre", "Apellido Paterno", "ApellidoMaterno", "Correo", "PlantelId", "UsuarioId");
-            foreach (var dc in docentes){
-                WriteLine($"{dc.DocenteId,-10}|{dc.Nombre,-20}|{dc.ApellidoPaterno,-20}|{dc.ApellidoMaterno,-20}|{dc.Correo,-20}|{dc.PlantelId,-10}|{dc.UsuarioId}");
             }
         }
     }
@@ -517,5 +512,304 @@ public static partial class CrudFuntions{
                 }
             }
         }
+    }
+
+    public static void ReadQueryReporteMantenimientos(IQueryable<ReporteMantenimiento> reporteMantenimientos){
+        using (Almacen bd = new()){
+            if (reporteMantenimientos is null || (!reporteMantenimientos.Any())){
+                WriteLine("No se encontraron reportes de mantenimiento");
+            }
+            else{
+                WriteLine("{0,-10}|{1,-20}|{2,-20}|{3,-20}","ReporteMantenimientoId", "Fecha", "MantenimientoId", "MaterialId");
+                foreach (var rp in reporteMantenimientos){
+                    WriteLine($"{rp.ReporteMantenimientoId,-13}|{rp.Fecha,-20}|{rp.MantenimientoId,-20}|{rp.MaterialId,-20}");
+                }
+            }
+        }
+    }
+
+    public static void ReadQueryGrupo(IQueryable<Grupo> grupos){
+        using (Almacen bd = new()){
+            if (grupos is null || (!grupos.Any())){
+                WriteLine("No se encontraron grupos");
+            }
+            else{
+                WriteLine("{0,-10}|{1}", "GrupoId", "Nombre");
+                foreach (var gr in grupos){
+                    WriteLine($"{gr.GrupoId,-10}|{gr.Nombre}");
+                }
+            }
+        }
+    }
+
+    public static void ReadQueryLaboratorios(IQueryable<Laboratorio> laboratorios){
+        using (Almacen bd = new()){
+            if (laboratorios is null || (!laboratorios.Any())){
+                WriteLine("No se encontraron laboratorios");
+            }
+            else{
+                WriteLine("{0,-10}|{1,-20}|{2}","LaboratorioId", "Nombre", "Descripcion");
+                foreach (var lab in laboratorios){
+                    WriteLine($"{lab.LaboratorioId,-10}|{lab.Nombre,-20}|{lab.Descripcion}");
+                }
+            }
+        }
+    }
+    public static void ReadQueryPlanteles(IQueryable<Plantel> plantels){
+        using (Almacen bd = new()){
+            if (plantels is null || (!plantels.Any())){
+                WriteLine("No se encontraron planteles");
+            }
+            else{
+                WriteLine("{0,-10}|{1,-20}|{2,-82}|{3}","PlantelId", "Nombre", "Direccion", "Telefono");
+                foreach (var pl in plantels){
+                    WriteLine($"{pl.PlantelId,-10}|{pl.Nombre,-20}|{pl.Direccion,-82}|{pl.Telefono}");
+                }
+            }
+        }
+    }
+
+    public static void ReadQuerySemestres(IQueryable<Semestre> semestres){
+        using (Almacen bd = new()){
+            if (semestres is null || (!semestres.Any())){
+                WriteLine("No se encontraron semestres");
+            }
+            else{
+                WriteLine("{0,-10}|{1}","SemestreId", "Numero");
+                foreach (var sm in semestres){
+                    WriteLine($"{sm.SemestreId,-10}|{sm.Numero}");
+                }
+            }
+        }
+    }
+
+    public static void ReadQueryMantenimientos(IQueryable<Mantenimiento> mantenimientos){
+        using (Almacen bd = new()){
+            if (mantenimientos is null || (!mantenimientos.Any())){
+                WriteLine("No se encontraron mantenimientos");
+            }
+            else{
+                WriteLine("{0,-10}|{1,-20}|{2}","MantenimientoId", "Nombre", "Descripcion");
+                foreach (var man in mantenimientos){
+                    WriteLine($"{man.MantenimientoId,-10}|{man.Nombre,-20}|{man.Descripcion}");
+                }
+            }
+        }
+    }
+
+    public static void ReadQueryUsuarios(IQueryable<Usuario> usuarios){
+        using (Almacen bd = new()){
+            if (usuarios is null || (!usuarios.Any())){
+                WriteLine("No se encontraron usuarios");
+            }
+            else{
+                WriteLine("{0,-10}|{1,-20}|{2}","UsuarioId", "Usuario1", "Password");
+                foreach (var us in usuarios){
+                    WriteLine($"{us.UsuarioId,-10}|{us.Usuario1,-20}|{us.Password}");
+                }
+            }
+        }
+    }
+
+    public static void ReadQueryDocentes(IQueryable<Docente> docentes){
+        using (Almacen bd = new()){
+            if (docentes is null || (!docentes.Any())){
+                WriteLine("No se encontraron docentes");
+            }
+            else{
+                WriteLine("{0,-10}|{1,-20}|{2,-20}|{3,-20}|{4,-20}|{5,-10}|{6,-10}","DocenteId", "Nombre", "Apellido Paterno", "ApellidoMaterno", "Correo", "PlantelId", "UsuarioId");
+                foreach (var dc in bd.Docentes){
+                    WriteLine($"{dc.DocenteId,-10}|{dc.Nombre,-20}|{dc.ApellidoPaterno,-20}|{dc.ApellidoMaterno,-20}|{dc.Correo,-20}|{dc.PlantelId,-10}|{dc.UsuarioId}");
+                }
+            }
+        }
+    }
+
+    public static void ReadQueryAlmacenistas(IQueryable<Almacenista> almacenistas){
+        using (Almacen bd = new()){
+            if (almacenistas is null || (!almacenistas.Any())){
+                WriteLine("No se encontraron almacenistas");
+            }
+            else{
+                WriteLine("{0,-10}|{1,-20}|{2,-20}|{3,-20}|{4,-20}|{5,-10}|{6,-10}","AlmacenistaId", "Nombre", "Apellido Paterno", "ApellidoMaterno", "Correo", "PlantelId", "UsuarioId");
+                foreach (var almacenista in almacenistas){
+                    Write($"{almacenista.AlmacenistaId,-13}|{almacenista.Nombre,-20}|{almacenista.ApellidoPaterno,-20}|");
+                    WriteLine($"{almacenista.ApellidoMaterno,-20}|{almacenista.Correo,-20}|{almacenista.PlantelId,-10}|{almacenista.UsuarioId}");
+                }
+            }
+        }
+    }
+
+    public static void ReadQueryCoordinadores(IQueryable<Coordinador> coordinadors){
+        using (Almacen bd = new()){
+            if (coordinadors is null || (!coordinadors.Any())){
+                WriteLine("No se encontraron coordinadores");
+            }
+            else{
+                WriteLine("{0,-10}|{1,-20}|{2,-20}|{3,-20}|{4,-20}|{5,-10}|{6,-10}","CoordinadorId", "Nombre", "ApellidoPaterno", "ApellidoMaterno", "Correo", "PlantelId", "UsuarioId");
+                foreach (var cord in coordinadors){
+                    WriteLine($"{cord.CoordinadorId,-13}|{cord.Nombre,-20}|{cord.ApellidoPaterno,-20}|{cord.ApellidoMaterno,-20}|{cord.Correo,-20}|{cord.PlantelId,-10}|{cord.UsuarioId}");
+                }
+            }
+        }
+    }
+
+    public static void ReadQueryEstudiantes(IQueryable<Estudiante> estudiantes){
+        using (Almacen bd = new()){
+            if (estudiantes is null || (!estudiantes.Any())){
+                WriteLine("No se encontraron estudiantes");
+            }
+            else
+            {
+                WriteLine("{0,-12}|{1,-20}|{2,-20}|{3,-20}|{4,-20}|{5,-10}|{6,-10}|{7,-10}|{8,-5}|{9,-15}","EstudianteId", "Nombre", "Apellido Paterno", "ApellidoMaterno", "Correo", "PlantelId", "UsuarioID", "SemestreId", "GrupoId", "Adeudo");
+                foreach (var es in estudiantes){
+                    WriteLine($"{es.EstudianteId,-12}|{es.Nombre,-20}|{es.ApellidoPaterno,-20}|{es.ApellidoMaterno,-20}|{es.Correo,-20}|{es.PlantelId,-10}|{es.UsuarioId,-10}|{es.SemestreId,-10}|{es.GrupoId,-7}|{es.Adeudo}");
+                }
+            }
+        }
+    }
+
+    public static void ReadQueryMateriales(IQueryable<Material> materials){
+        using (Almacen bd = new()){
+            if (materials is null || (!materials.Any())){
+                WriteLine("No se encontraron materiales");
+            }
+            else{
+                WriteLine("{0,-10}|{1,-20}|{2,-15}|{3}","MaterialId", "ModeloId", "Descripcion", "YearEntrada");
+                foreach (var mat in materials){
+                    WriteLine($"{mat.MaterialId,-10}|{mat.ModeloId,-20}|{mat.Descripcion,15}|{mat.YearEntrada}");
+                }
+            }
+        }
+    }
+
+    public static void ReadQueryPedidos(IQueryable<Pedido> pedidos){
+        using (Almacen bd = new()){
+            if (pedidos is null || (!pedidos.Any())){
+                WriteLine("No se encontraron pedidos");
+            }
+            else{
+                WriteLine("{0,-10}|{1,-20}|{2,-20}|{3,-20}|{4,-20}|{5,-10}|{6,-10}","PedidoId", "Fecha", "LaboratorioId", "HoraEntrega", "HoraDevolucion", "EstudianteId", "DocenteId");
+                foreach (var ped in pedidos){
+                    WriteLine($"{ped.PedidoId,-13}|{ped.Fecha,-20}|{ped.LaboratorioId,-20}|{ped.HoraEntrega,-20}|{ped.HoraDevolucion,-20}|{ped.EstudianteId,-10}|{ped.DocenteId}");
+                }
+            }
+        }
+    }
+    public static void ReadQueryDescPedidos(IQueryable<DescPedido> descPedidos){
+        using (Almacen bd = new()){
+            if (descPedidos is null || (!descPedidos.Any())){
+                WriteLine("No se encontraron descripciones de pedidos");
+            }
+            else{
+                WriteLine("{0,-10}|{1,-20}|{2,-20}|{3,-20}","DescPedidoId", "Cantidad", "PedidoId", "MaterialId");
+                foreach (var desc in descPedidos){
+                    WriteLine($"{desc.DescPedidoId,-13}|{desc.Cantidad,-20}|{desc.PedidoId,-20}|{desc.MaterialId}");
+                }
+            }
+        }
+    }
+    public static void GenerateReports(){
+        string input = "";
+        Program.SectionTitle("Hagamos un reporte:");
+        do{
+            WriteLine($"De que tabla quieres hacer reporte?");
+            WriteLine($"1 - Reporte mantenimiento");
+            WriteLine($"2 - Categoria");
+            WriteLine($"3 - Grupo");
+            WriteLine($"4 - Laboratorio");
+            WriteLine($"5 - Marca");
+            WriteLine($"6 - Modelo");
+            WriteLine($"7 - Plantel");
+            WriteLine($"8 - Semestre");
+            WriteLine($"9 - Mantenimiento");
+            WriteLine($"10 - Usuario");
+            WriteLine($"11 - Docente");
+            WriteLine($"12 - Almacenista");
+            WriteLine($"13 - Coordinador");
+            WriteLine($"14 - Estudiante");
+            WriteLine($"15 - Material");
+            WriteLine($"16 - Pedido");
+            WriteLine($"17 - Descripcion de pedido");
+            WriteLine($"18 - Salir");
+            input = ReadLine();
+            using (Almacen db = new Almacen()){
+                switch (input) {
+                    case "1":
+                        IQueryable<ReporteMantenimiento> reporteMantenimientos = db.ReporteMantenimientos.OrderByDescending(r => r.ReporteMantenimientoId);
+                        ReadQueryReporteMantenimientos(reporteMantenimientos);
+                        break;
+                    case "2":
+                        IQueryable<Categoria> categorias = db.Categorias.OrderByDescending(r => r.CategoriaId);
+                        ReadQueryCategorias(categorias);
+                        break;
+                    case "3":
+                        IQueryable<Grupo> grupos = db.Grupos.OrderByDescending(r => r.GrupoId);
+                        ReadQueryGrupo(grupos);
+                        break;
+                    case "4":
+                        IQueryable<Laboratorio> laboratorios = db.Laboratorios.OrderByDescending(r => r.LaboratorioId);
+                        ReadQueryLaboratorios(laboratorios);
+                        break;
+                    case "5":
+                        IQueryable<Marca> marcas = db.Marcas.OrderByDescending(r => r.MarcaId);
+                        ReadQueryMarcas(marcas);
+                        break;
+                    case "6":
+                        IQueryable<Modelo> modelos = db.Modelos.OrderByDescending(r => r.ModeloId);
+                        ReadQueryModelos(modelos);
+                        break;
+                    case "7":
+                        IQueryable<Plantel> planteles = db.Planteles.OrderByDescending(r => r.PlantelId);
+                        ReadQueryPlanteles(planteles);
+                        break;
+                    case "8":
+                        IQueryable<Semestre> semestres = db.Semestres.OrderByDescending(r => r.SemestreId);
+                        ReadQuerySemestres(semestres);
+                        break;
+                    case "9":
+                        IQueryable<Mantenimiento> mantenimientos = db.Mantenimientos.OrderByDescending(r => r.MantenimientoId);
+                        ReadQueryMantenimientos(mantenimientos);
+                        break;
+                    case "10":
+                        IQueryable<Usuario> usuarios = db.Usuarios.OrderByDescending(r => r.UsuarioId);
+                        ReadQueryUsuarios(usuarios);
+                        break;
+                    case "11":
+                        IQueryable<Docente> docentes = db.Docentes.OrderByDescending(r => r.DocenteId);
+                        ReadQueryDocentes(docentes);
+                        break;
+                    case "12":
+                        IQueryable<Almacenista> almacenistas = db.Almacenistas.OrderByDescending(r => r.AlmacenistaId);
+                        ReadQueryAlmacenistas(almacenistas);
+                        break;
+                    case "13":
+                        IQueryable<Coordinador> coordinadors = db.Coordinadores.OrderByDescending(r => r.CoordinadorId);
+                        ReadQueryCoordinadores(coordinadors);
+                        break;
+                    case "14":
+                        IQueryable<Estudiante> estudiantes = db.Estudiantes.OrderByDescending(r => r.EstudianteId);
+                        ReadQueryEstudiantes(estudiantes);
+                        break;
+                    case "15":
+                        IQueryable<Material> materials = db.Materiales.OrderByDescending(r => r.MaterialId);
+                        ReadQueryMateriales(materials);
+                        break;
+                    case "16":
+                        IQueryable<Pedido> pedidos = db.Pedidos.OrderByDescending(r => r.PedidoId);
+                        ReadQueryPedidos(pedidos);
+                        break;
+                    case "17":
+                        IQueryable<DescPedido> descPedidos = db.DescPedidos.OrderByDescending(r => r.DescPedidoId);
+                        ReadQueryDescPedidos(descPedidos);
+                        break;
+                    case "18":
+                        return;
+                    default:
+                        WriteLine("Opcion invalida");
+                        break;
+                }
+            }
+        }while (true);
     }
 }

@@ -292,13 +292,7 @@ public class UnitTest1
         Assert.Equal(EXP,ACT);
     }
 
-    [Fact]
-    public void Test_Register_Is_Letters(){
-        string register = "AAAAAA";
-        int ACT = //Metodo
-        int EXP = 02;
-        Assert.Equals(ACT,EXP);
-    } 
+
 
     
 }

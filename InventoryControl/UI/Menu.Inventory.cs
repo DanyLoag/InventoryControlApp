@@ -10,7 +10,7 @@ public static partial class UI
         {
             WriteLine("Administrar inventario Menu:");
             WriteLine("1: Agregar nuevo material"); //check
-            WriteLine("2: Modificar material");
+            WriteLine("2: Modificar material"); //check
             WriteLine("3: Eliminar material"); //check
             WriteLine("4: Salir");
             String option = ReadLine()??"";
@@ -22,7 +22,11 @@ public static partial class UI
                     CrudFuntions.NewMaterial();
                     break;
                 case "2":
-                    
+                    CrudFuntions.ListMaterialsWithHighlight();
+                    int updateMaterials = CrudFuntions.UpdateMaterials();
+                    WriteLine($"{updateMaterials} materiales modificados.");
+                    WriteLine();
+                    CrudFuntions.ListMaterialsWithHighlight();
                     break;
                 case "3":
                     //CrudFuntions.ListMaterialsWithHighlight();

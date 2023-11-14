@@ -10,8 +10,12 @@ public static partial class CrudFuntions{
             GeneralSearchCategory(typeOfUser);
             descPedido.MaterialId = UI.GetMaterialID(SearchId());
             WriteLine("Ingresa la cantidad:");
-            descPedido.Cantidad = int.Parse(ReadLine());
-           // IAlmacenDataContext? db = (IAlmacenDataContext)new Almacen();
+
+            AddPedido(pedido, descPedido,db);
+            if(typeOfUser == 2){
+                Estudiante estudiante = db.Estudiantes.FirstOrDefault(p => p.UsuarioId == userID);
+                UI.SendNotTeacher(estudiante,descPedido,pedido);
+            }
             AddPedido(pedido, descPedido,db);
         }
     }
@@ -35,17 +39,23 @@ public static partial class CrudFuntions{
         } while (UI.LabValidation(LabID) == false);
         pedido.LaboratorioId =LabID;
 
-        do{
-            WriteLine("Ingresa la hora de entrega:");
-            input = ReadLine();
-        } while (UI.HourValidation(input) == false);
-        pedido.HoraEntrega = DateTime.Parse($"{pedido.Fecha:yyyy-MM-dd} {input}");
+        do
+        {
+            do{
+                WriteLine("Ingresa la hora de entrega:");
+                input = ReadLine();
+            } while (UI.HourValidation(input) == false);
+            pedido.HoraEntrega = DateTime.Parse($"{pedido.Fecha:yyyy-MM-dd} {input}");
 
-        do{
-            WriteLine("Ingresa la hora de devolucion:");
-            input = ReadLine();
-        } while (UI.HourValidation(input) == false);
-        pedido.HoraDevolucion = DateTime.Parse($"{pedido.Fecha:yyyy-MM-dd} {input}");
+            do{
+                WriteLine("Ingresa la hora de devolucion:");
+                input = ReadLine();
+            } while (UI.HourValidation(input) == false);
+            pedido.HoraDevolucion = DateTime.Parse($"{pedido.Fecha:yyyy-MM-dd} {input}");
+            if(pedido.HoraDevolucion <= pedido.HoraEntrega){
+                Program.Fail("La hora de devolucion debe ser posterior a la hora de entrega");
+            }
+        } while (pedido.HoraDevolucion <= pedido.HoraEntrega);
 
         //Para que la fecha tome el valor de Hora de Entrega
         pedido.Fecha = DateTime.Parse($"{pedido.Fecha:yyyy-MM-dd} {pedido.HoraEntrega:HH:mm:ss}");
@@ -160,15 +170,82 @@ public static partial class CrudFuntions{
             int PedidoId;
             IQueryable<Pedido> pedidos = db.Pedidos.Where(p => p.DocenteId == userID && p.Estado == false);
             ReadQueryHistory(pedidos);
+            int pedidoId;
             do{
-                WriteLine("Que pedido quiere aprobar?");
+                WriteLine("Que pedido quieres modificar?");
                 input = ReadLine();
-                PedidoId = UI.GetPedidoID(input);
-            } while (UI.LabValidation(PedidoId) == false);
-            Pedido pedido = db.Pedidos.Find(PedidoId);
-            pedido.Estado = true;
-            db.SaveChanges();
-            Program.SectionTitle("Aprovado");
+                pedidoId = UI.GetPedidoID(input);
+            } while (UI.PedidoValidation(pedidoId) == false);
+            Pedido? pedido = db.Pedidos!.FirstOrDefault(p => p.PedidoId == pedidoId);
+            do{
+                WriteLine("¿Quiere aprobar o denegar el pedido?");
+                WriteLine("1. Aprovar");
+                WriteLine("2. Denegar");
+                input = ReadLine();
+            } while (input == "1\n" || input == "2\n");
+            input = input!.Trim();
+            if(input == "1"){
+                pedido.Estado = true;
+                Estudiante estudiante = db.Estudiantes.FirstOrDefault(p => p.EstudianteId == pedido.EstudianteId);
+                UI.SendEmailForOrderState(estudiante,"",pedido);
+                db.SaveChanges();
+                Program.SectionTitle("Aprovado");
+            }
+            else if(input == "2"){
+                pedido.Estado = false;
+                Estudiante estudiante = db.Estudiantes.FirstOrDefault(p => p.EstudianteId == pedido.EstudianteId);
+                WriteLine($"Razon para denegar la peticion:");
+                input = ReadLine();
+                UI.SendEmailForOrderState(estudiante,input,pedido);
+                db.SaveChanges();
+                Program.Fail("Denegado");
+            }
         }
     }
+    public static void EntregaMaterial(){
+        using(Almacen db = new()){
+            IQueryable<Material> materials = db.Materiales.Where(m => m.Condicion == "2");
+            ReadQueryMateriales(materials);
+            string? input;
+            int materialId;
+            do{
+                WriteLine("Que material desea entregar?");
+                input = ReadLine();
+                materialId = UI.GetMaterialForID(input);
+            }while(UI.MaterialValidation(materialId) == false);
+            Material material = db.Materiales.FirstOrDefault(m => m.MaterialId == materialId);
+            material.Condicion = "1";
+            db.SaveChanges();
+        }
+    }
+
+    public static void CalcularAdeudo()
+    {
+        using (Almacen db = new())
+        {
+            foreach (Estudiante alumno in db.Estudiantes)
+            {
+                DateTime fechaActual = DateTime.Now.Date;
+                
+                var pedidos = db.Pedidos
+                    .Where(p => p.EstudianteId == alumno.EstudianteId)
+                    .AsEnumerable() // Forzar la evaluación en el lado del cliente
+                    .Where(p => (fechaActual - p.Fecha.Value.Date).TotalDays >= 0);
+                if (pedidos is null || !pedidos.Any()){
+                    alumno.Adeudo = 0;
+                }
+                else
+                {
+                    alumno.Adeudo = 0;
+                    foreach (var item in pedidos){
+                        fechaActual = DateTime.Now.Date;
+                        alumno.Adeudo = alumno.Adeudo + (int)(10 * (fechaActual - item.Fecha.Value.Date).TotalDays);
+                    }
+                    UI.NotificationOfOrders(alumno);
+                }
+                db.SaveChanges();
+            }
+        }
+    }
+
 }

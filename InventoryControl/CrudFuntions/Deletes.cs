@@ -2,7 +2,9 @@ using System;
 using AlmacenDataContext;
 using AlmacenSQLiteEntities;
 public static partial class CrudFuntions{
-    public static int DeleteMaterials(int materialId,IAlmacenDataContext dataContext){
+
+    
+public static int DeleteMaterials(int materialId,IAlmacenDataContext dataContext){
         using (var db = dataContext){
             
             Material? materiales = db.Materiales!.FirstOrDefault(m => m.MaterialId == materialId);
@@ -48,12 +50,13 @@ public static partial class CrudFuntions{
                 if(db.Docentes is null) return -2;
                 db.Docentes.RemoveRange(docentes);
             }
+
             int affected = db.SaveChanges();
             return affected;
         }
     }
     
-    public static int DeleteInventoryManager(int almacenistaId,IAlmacenDataContext dataContext){
+   public static int DeleteInventoryManager(int almacenistaId,IAlmacenDataContext dataContext){
         using (var db = dataContext){
             
             Almacenista? almacenistas = db.Almacenistas!.FirstOrDefault(p => p.AlmacenistaId == almacenistaId);
@@ -62,8 +65,23 @@ public static partial class CrudFuntions{
                 return -1;
             }
             else{
-                if(db.Almacenistas is null) return 0;
-                db.Almacenistas.RemoveRange(almacenistas);
+                if (almacenistas is null)
+                {
+                    WriteLine("No se encontró un almacenista para eliminar");
+                    return 0;
+                }
+                else
+                {
+
+                    // Eliminar el usuario asociado al almacenista
+                    if (almacenistas.Usuario != null)
+                    {
+                        db.Usuarios.Remove(almacenistas.Usuario);
+                    }
+
+                    // Eliminar al almacenista
+                    db.Almacenistas.Remove(almacenistas);
+                }
             }
             int affected = db.SaveChanges();
             return affected;
@@ -87,7 +105,7 @@ public static partial class CrudFuntions{
         }
     }
 
-    public static int DeleteMant(int mantenimientoId,IAlmacenDataContext dataContext){
+ public static int DeleteMant(int mantenimientoId,IAlmacenDataContext dataContext){
         using (var db = dataContext){
             Mantenimiento? mantenimiento = db.Mantenimientos!.FirstOrDefault(p => p.MantenimientoId == mantenimientoId);
             if((mantenimiento is null)){

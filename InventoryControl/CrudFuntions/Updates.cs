@@ -371,4 +371,159 @@ public static partial class CrudFuntions
             }
         }
     }
+
+    public static int UpdateMaterials(){
+        using(Almacen db = new()){
+            Material material = new Material();
+            string? input;
+            int id;
+            do{
+                WriteLine("Que material quieres modificar?");
+                input = ReadLine();
+                id = UI.GetMaterialForID(input);
+            } while (UI.MaterialValidation(id) == false);
+            material = db.Materiales!.FirstOrDefault(p => p.MaterialId == id);
+            if((material is null)){
+                Program.Fail("No se encontro un material para modificar");
+                return 0;
+            }
+            else{
+                Program.SectionTitle("¿Que quieres modificar?");
+                WriteLine("1. Modelo");
+                WriteLine("2. Descripcion");
+                WriteLine("3. Año de entrada");
+                WriteLine("4. Marca");
+                WriteLine("5. Categoria");
+                WriteLine("6. Plantel");
+                WriteLine("7. Serie");
+                WriteLine("8. Valor Historico");
+                WriteLine("9. Condicion");
+                WriteLine("10. Cancelar modificacion");
+                string? opcion = ReadLine();
+                
+                switch(opcion)
+                {
+                    case "1":
+                    {
+                        WriteLine($"Modelo actual: {material.Modelo.Nombre}");
+                        ReadModelos();
+                        GeneralSearchModels();
+                        do{
+                            WriteLine("Ingresa el modelo modificada:");
+                            input = ReadLine();
+                            id = UI.GetModeloID(input);
+                        } while (UI.ModeloValidation(id) == false);
+                        material.ModeloId = id;
+                        break;
+                    }
+                    case "2":
+                    {
+                        WriteLine($"Descripcion actual: {material.Descripcion}");
+                        do{
+                            WriteLine("Ingresa la descripcion modificada:");
+                            material.Descripcion = ReadLine();
+                        } while (material.Descripcion.Length > 255);
+                        break;
+                    }
+                    case "3":
+                    {
+                        WriteLine($"Año de entrada actual: {material.YearEntrada}");
+                        do{
+                            WriteLine("Ingresa el año de entrada modificado:");
+                            input = ReadLine();
+                        }while(!int.TryParse(input, out _));
+                        material.YearEntrada = int.Parse(input);
+                        break;
+                    }
+                    case "4":
+                    {
+                        WriteLine($"Marca actual: {material.Marca.Nombre}");
+                        ReadMarcas();
+                        GeneralSearchMarcas();
+                        do{
+                            WriteLine("Ingresa la marca modificada:");
+                            input = ReadLine();
+                            id = UI.GetMarcaID(input);
+                        } while (UI.MarcaValidation(id) == false);
+                        material.MarcaId = id;
+                        break;
+                    }
+                    case "5":
+                        WriteLine($"Categoria actual: {material.Categoria.Nombre}");
+                        ReadCategorias();
+                        GeneralSearchCategory(4);
+                        do{
+                            WriteLine("Ingresa la categoria modificada:");
+                            input = ReadLine();
+                            id = UI.GetCategoriaID(input);
+                        } while (UI.CategoriaValidation(id) == false);
+                        material.CategoriaId = id;
+                        break;
+                    case "6":
+                        WriteLine($"Plantel actual: {material.Plantel.Nombre}");
+                        do{
+                            WriteLine("Plantel: ");
+                            WriteLine("1. Colomos");
+                            WriteLine("2. Tonalá");
+                            WriteLine("3. Río Santiago");
+                            input = ReadLine();
+                            if (!int.TryParse(input, out _))
+                            {
+                                WriteLine("Opción invalida");
+                            }
+                            material.PlantelId = int.Parse(input);
+                        } while (material.PlantelId < 1 || material.PlantelId > 3);
+                        break;
+                    case "7":
+                        WriteLine($"Numero de serie actual: {material.Serie}");
+                        do{
+                            WriteLine("Ingresa el numero de serie a modificar:");
+                            material.Serie = ReadLine();
+                        } while (material.Serie.Length > 255);
+                        break;
+                    case "8":
+                        WriteLine($"Valor historico actual: {material.ValorHistorico}");
+                        do{
+                            WriteLine("Ingresa el valor historico modificado:");
+                            input = ReadLine();
+                        }while(!decimal.TryParse(input, out _));
+                        material.ValorHistorico = decimal.Parse(input);
+                        break;
+                    case "9":
+                        WriteLine($"Condicion actual: {material.Condicion}");
+                        // Condicion: 1 disponible, 2 no disponible
+                        do{
+                            WriteLine("Condicion del material");
+                            WriteLine("1. Disponible para pedidos");
+                            WriteLine("2. No disponible para pedidos");
+                            input = ReadLine();
+                        } while (input == "1\n" || input == "2\n");
+
+                        input = input!.Trim();
+
+                        if(input == "1"){
+                            material.Condicion = input;
+                            Program.SectionTitle("Disponible");
+                        }
+                        else if(input == "2"){
+                            material.Condicion = input;
+                            db.SaveChanges();
+                            Program.Fail("No disponible");
+                        }
+                        else{
+                            Program.Fail("No existe la condicion");
+                        }
+                        break;
+                    case "10":
+                        Program.Fail("Modificacion cancelada");
+                        break;
+                    default:
+                        WriteLine("Opcion invalida");
+                        break;
+                }
+                int affected = db.SaveChanges();
+                return affected;
+            }
+        }
+    }
 }

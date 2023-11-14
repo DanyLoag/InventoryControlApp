@@ -95,7 +95,7 @@ public static partial class UI{
         Docente docente = new Docente();
         Usuario usuario = new Usuario();
         
-        person = GetDataOfSignUp(true);
+        person = GetDataOfSignUp(false);
         docente.Nombre = person.Nombre;
         docente.ApellidoPaterno = person.ApellidoPaterno;
         docente.ApellidoMaterno = person.ApellidoMaterno;
@@ -112,7 +112,7 @@ public static partial class UI{
         Almacenista almacenista = new Almacenista();
         Usuario usuario = new Usuario();
         
-        person = GetDataOfSignUp(true);
+        person = GetDataOfSignUp(false);
         almacenista.Nombre = person.Nombre;
         almacenista.ApellidoPaterno = person.ApellidoPaterno;
         almacenista.ApellidoMaterno = person.ApellidoMaterno;
