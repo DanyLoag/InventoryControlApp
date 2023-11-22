@@ -78,4 +78,42 @@ public static partial class UI
             }
         }
     }
+
+      public static (Usuario? usuarioEncontrado,int typeOfUser) LogInTest(string userName,string password,IAlmacenDataContext dataContext)
+    {
+        using (var db = dataContext)
+        {
+            var user = db.Usuarios.FirstOrDefault(u => u.Usuario1 == userName && u.Password == password);//busca al usuario en la BD 
+            if (user != null)//si no es nulo , osea que si encontro un usuario regresara al usuario encontrado junto con su tipo
+            {
+                Clear();
+                WriteLine($"¡Bienvenido, {userName}!");
+                WriteLine("");
+                int TipoUsuario=0;
+                if (user.Docentes.Any())
+                {
+                    TipoUsuario=1;
+                }
+                else if (user.Estudiantes.Any())
+                {
+                    TipoUsuario=2;
+                }
+                else if (user.Almacenistas.Any())
+                {
+                    TipoUsuario=3;
+                }
+                else if (user.Coordinadores.Any())
+                {
+                    TipoUsuario=4;
+                }
+                return (user,TipoUsuario);
+            }
+            else
+            {
+                Clear();
+                WriteLine("Usuario o contraseña incorrectos. Inténtalo nuevamente.");
+                return (user,0);
+            }
+        }
+    }
 }

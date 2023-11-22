@@ -199,4 +199,120 @@ public static partial class CrudFuntions{
             return affected;
         }
     }
+
+public static int DeleteMaterialsTest(int materialId,IAlmacenDataContext dataContext){
+        using (var db = dataContext){
+            
+            Material? materiales = db.Materiales!.FirstOrDefault(m => m.MaterialId == materialId);
+            if((materiales is null)){
+                WriteLine("No se encontro un material para eliminar");
+                return -1;
+            }
+            else{
+                if(db.Materiales is null) return -2;
+                db.Materiales.RemoveRange(materiales);
+            }
+            int affected = db.SaveChanges();
+            return affected;
+        }
+    }
+public static int DeleteOrdersTest(int pedidoId,IAlmacenDataContext dataContext){
+        using (var db = dataContext){
+            
+            Pedido? pedidos = db.Pedidos!.FirstOrDefault(p => p.PedidoId == pedidoId);
+            if((pedidos is null)){
+                WriteLine("No se encontro un pedido para eliminar");
+                return -1;
+            }
+            else{
+                if(db.Pedidos is null) return -2;
+                db.Pedidos.RemoveRange(pedidos);
+            }
+            int affected = db.SaveChanges();
+            return affected;
+        }
+    }
+
+public static int DeleteTeachersTest(int docenteId,IAlmacenDataContext dataContext){
+        using (var db = dataContext){
+            
+            Docente? docentes = db.Docentes!.FirstOrDefault(p => p.DocenteId == docenteId);
+            if((docentes is null)){
+                WriteLine("No se encontro un docente para eliminar");
+                return -1;
+            }
+            else{
+                if(db.Docentes is null) return -2;
+                db.Docentes.RemoveRange(docentes);
+            }
+
+            int affected = db.SaveChanges();
+            return affected;
+        }
+    }
+ public static int DeleteInventoryManagerTest(int almacenistaId,IAlmacenDataContext dataContext){
+        using (var db = dataContext){
+            
+            Almacenista? almacenistas = db.Almacenistas!.FirstOrDefault(p => p.AlmacenistaId == almacenistaId);
+            if((almacenistas is null)){
+                WriteLine("No se encontro un almacenista para eliminar");
+                return -1;
+            }
+            else{
+                if (almacenistas is null)
+                {
+                    WriteLine("No se encontró un almacenista para eliminar");
+                    return 0;
+                }
+                else
+                {
+
+                    // Eliminar el usuario asociado al almacenista
+                    if (almacenistas.Usuario != null)
+                    {
+                        db.Usuarios.Remove(almacenistas.Usuario);
+                    }
+
+                    // Eliminar al almacenista
+                    db.Almacenistas.Remove(almacenistas);
+                }
+            }
+            int affected = db.SaveChanges();
+            return affected;
+        }
+    }
+
+public static int DeleteStudentsTest(int estudianteId ,IAlmacenDataContext dataContext){
+        using (var db = dataContext){
+            
+            Estudiante? estudiantes = db.Estudiantes!.FirstOrDefault(p => p.EstudianteId == estudianteId);
+            if((estudiantes is null)){
+                WriteLine("No se encontro un estudiante para eliminar");
+                return -1;
+            }
+            else{
+                if(db.Estudiantes is null) return -2;
+                db.Estudiantes.RemoveRange(estudiantes);
+            }
+            int affected = db.SaveChanges();
+            return affected;
+        }
+    }
+
+ public static int DeleteMantTest(int mantenimientoId,IAlmacenDataContext dataContext){
+        using (var db = dataContext){
+            Mantenimiento? mantenimiento = db.Mantenimientos!.FirstOrDefault(p => p.MantenimientoId == mantenimientoId);
+            if((mantenimiento is null)){
+                WriteLine("No se encontro un mantenimiento para eliminar");
+                return -1;
+            }
+            else{
+                if(db.Mantenimientos is null) return -2;
+                db.Mantenimientos.RemoveRange(mantenimiento);
+            }
+            int affected = db.SaveChanges();
+            return affected;
+        }
+    }
+
 }

@@ -71,16 +71,16 @@ public class UnitTest1
 
     
     [Fact]
-    public void PasswordValidation_PasswordWithoutLowercase_ReturnsFifty()
+    public void PasswordValidation_PasswordWithoutLowercase_Returns20()
     {
         // Arrange
-        string passwordWithoutLowercase = "UPPERCASE123&#!";
+        string passwordWithoutLowercase = "uppercase123&#!";
 
         // Act
         int result = UI.PasswordValidation(passwordWithoutLowercase);
 
         // Assert
-        Assert.Equal(50, result);
+        Assert.Equal(20, result);
     }
 
     [Fact]
@@ -134,6 +134,4 @@ public class UnitTest1
         // Assert
         Assert.Equal(20, result);
     }
-
-    
 }

@@ -196,3 +196,26 @@ public partial class Almacen : DbContext
     }
 
 }
+
+public interface IAlmacenDataContext:IDisposable
+
+{
+   DbSet<Usuario> Usuarios { get; }
+    DbSet<Docente> Docentes { get; }
+    DbSet<Estudiante> Estudiantes { get; }
+    DbSet<Almacenista> Almacenistas { get; }
+    DbSet<Coordinador> Coordinadores { get; }
+    DbSet<Categoria> Categorias { get; }
+    DbSet<DescPedido> DescPedidos { get; }
+    DbSet<Grupo> Grupos { get; }
+    DbSet<Laboratorio> Laboratorios { get; }
+    DbSet<Mantenimiento> Mantenimientos { get; }
+    DbSet<Marca> Marcas { get; }
+    DbSet<Material> Materiales { get; }
+    DbSet<Modelo> Modelos { get; }
+    DbSet<Pedido> Pedidos { get; }
+    DbSet<Plantel> Planteles { get; }
+    DbSet<ReporteMantenimiento> ReporteMantenimientos { get; }
+    DbSet<Semestre> Semestres { get; }
+    int SaveChanges();
+}
