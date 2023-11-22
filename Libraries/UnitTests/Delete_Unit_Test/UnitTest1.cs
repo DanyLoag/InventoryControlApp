@@ -69,7 +69,7 @@ public class UnitTest1
 
       var materiales = new List<Material>
     {
-        new Material
+   new Material
         {
             MaterialId = 1,
             ModeloId = 1,
@@ -80,11 +80,20 @@ public class UnitTest1
             PlantelId = 1,
             Serie = "ABC123",
             ValorHistorico = 100.00m,
-            Condicion = "B",
-        },new Material
-        {
-            MaterialId = 2
+            Condicion = "1",
+        },new Material{
+            MaterialId = 2,
+            ModeloId = 1,
+            Descripcion = "Material de prueba",
+            YearEntrada = 2023,
+            MarcaId = 1,
+            CategoriaId = 2,
+            PlantelId = 1,
+            Serie = "ABC123",
+            ValorHistorico = 100.00m,
+            Condicion = "1",
         }
+        
         
     };
 
@@ -199,6 +208,79 @@ public class UnitTest1
         int ACT=CrudFuntions.DeleteMaterialsTest(id,mockDbContext.Object);
         int EXP=-1;
         Assert.Equal(EXP,ACT);
+    }
+    [Fact]
+    public void Test_Material_Found(){
+        var mockDbContext = ConfigurarMockDbContext();
+        int id=1;
+        int ACT=UI.GetMaterialIDTest(id,mockDbContext.Object);
+        int EXP=1;
+        Assert.Equal(EXP,ACT);
+    }
+
+        [Fact]
+    public void Test_Material_Unabeliable(){
+        var mockDbContext = ConfigurarMockDbContext();
+        int id=2;
+        int ACT=UI.GetMaterialIDTest(id,mockDbContext.Object);
+        int EXP=2;
+        Assert.Equal(EXP,ACT);
+    }
+
+        [Fact]
+    public void Test_Material_NotExisting(){
+        var mockDbContext = ConfigurarMockDbContext();
+        int id=3;
+        int ACT=UI.GetMaterialIDTest(id,mockDbContext.Object);
+        int EXP=0;
+        Assert.Equal(EXP,ACT);
+    }
+
+    [Fact]
+    public void Test_Material_ID_EXP(){
+        string id="SDADSA";
+        var mockDbContext = ConfigurarMockDbContext();
+        int ACT=UI.GetMaterialForIDTest(id,mockDbContext.Object);
+        int EXP=0;
+        Assert.Equal(EXP,ACT);
+    }
+    [Fact]
+    public void Test_Material_ID_True(){
+        string id="1";
+        var mockDbContext = ConfigurarMockDbContext();
+        int ACT=UI.GetMaterialForIDTest(id,mockDbContext.Object);
+        int EXP=1;
+        Assert.Equal(EXP,ACT);
+
+    }
+        [Fact]
+    public void Test_Material_ID_False(){
+        string id="5";
+        var mockDbContext = ConfigurarMockDbContext();
+        int ACT=UI.GetMaterialForIDTest(id,mockDbContext.Object);
+        int EXP=0;
+        Assert.Equal(EXP,ACT);
+    }
+         [Fact]
+    public void Test_Material_Validation_True(){
+        int id=1;
+        var mockDbContext = ConfigurarMockDbContext();
+        bool ACT=UI.MaterialValidationTest(id,mockDbContext.Object);
+        Assert.True(ACT);
+    }
+         [Fact]
+    public void Test_Material_Validation_False(){
+        int id=58;
+        var mockDbContext = ConfigurarMockDbContext();
+        bool ACT=UI.MaterialValidationTest(id,mockDbContext.Object);
+        Assert.False(ACT);
+    }
+         [Fact]
+    public void Test_Material_Validation_EXP(){
+        int id=-50000;
+        var mockDbContext = ConfigurarMockDbContext();
+        bool ACT=UI.MaterialValidationTest(id,mockDbContext.Object);
+        Assert.False(ACT);
     }
 
     [Fact]

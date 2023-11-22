@@ -1061,31 +1061,5 @@ public static bool MantenimientoValidation(int realMantenimiento)
     return validMantenimiento;
 }
 
-public static bool MantenimientoValidationTest(int realMantenimiento,IAlmacenDataContext dataContext)
-{
-    bool validMantenimiento;
-    try
-    {
-        using (Almacen db = dataContext)
-        {
-            IQueryable<Mantenimiento> queryableMantenimiento = db.Mantenimientos.Where(d => d.MantenimientoId == realMantenimiento);
-            if (queryableMantenimiento is null || (!queryableMantenimiento.Any()))
-            {
-                Program.Fail("Ese mantenimiento no exite");
-                validMantenimiento = false;
-            }
-            else
-            {
-                validMantenimiento = true;
-            }
-        }
-    }
-    catch (System.Exception)
-    {
-        Program.Fail("Introduce un numero por favor.");
-        validMantenimiento = false;
-        throw;
-    }
-    return validMantenimiento;
-}
+
 }
